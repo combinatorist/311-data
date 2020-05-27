@@ -1,14 +1,11 @@
 import math
 from datetime import timedelta
-from config import config
+from settings import Ingest
 from utils.log import log
 from .. import info
 from ..conn import exec_sql
 from . import stage
 from . import views
-
-
-BATCH_SIZE = config['Ingestion']['QUERY_SIZE']
 
 
 def __update_requests_table():
@@ -48,7 +45,7 @@ def update():
         stage.fetch_year(
             year=year,
             num_rows=math.inf,
-            batch_size=BATCH_SIZE,
+            batch_size=Ingest.BATCH_SIZE,
             since=last_updated)
     stage.clean_table()
     __update_requests_table()

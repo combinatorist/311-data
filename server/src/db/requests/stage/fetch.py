@@ -1,3 +1,4 @@
+import math
 from . import table
 from utils.log import log
 from .socrata import SocrataClient
@@ -6,6 +7,8 @@ from .socrata import SocrataClient
 def fetch_year(year, num_rows, batch_size, since=None):
     log('\nYear: {}'.format(year))
 
+    if num_rows == -1:
+        num_rows = math.inf
     client = SocrataClient()
     where = None if since is None else f"updateddate > '{since.isoformat()}'"
     offset = 0

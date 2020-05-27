@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
-from ...conn import engine, Session
+from ...conn import engine, Session, exec_sql
 
 
 Base = declarative_base()
@@ -60,7 +60,12 @@ class Stage(Base):
     tbmrow = Column(Integer)
 
 
+def drop():
+    exec_sql('DROP TABLE IF EXISTS stage')
+
+
 def create():
+    drop()
     Base.metadata.create_all(engine)
 
 
@@ -69,7 +74,3 @@ def insert(rows):
     session.bulk_insert_mappings(Stage, rows)
     session.commit()
     session.close()
-
-
-def drop():
-    Base.metadata.drop_all(engine)

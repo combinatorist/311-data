@@ -2,10 +2,10 @@ import os
 import pickle
 import shutil
 import json
+from settings import Server
 
 
-TMP_DIR = os.environ.get('TMP_DIR', os.getcwd())
-DATA_DIR = os.path.join(TMP_DIR, 'static/picklebase')
+DATA_DIR = os.path.join(Server.TMP_DIR, 'picklebase')
 READY_FILE = os.path.join(DATA_DIR, 'ready')
 
 

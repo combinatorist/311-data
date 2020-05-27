@@ -1,13 +1,9 @@
-import math
-from config import config
+from settings import Ingest
 from utils.log import log
 from . import stage
 from . import views
 from .. import info
 from ..conn import exec_sql
-
-
-BATCH_SIZE = config['Ingestion']['QUERY_SIZE']
 
 
 def __update_requests_table(year):
@@ -27,7 +23,10 @@ def __update_requests_table(year):
     log('\tInserted rows: {}'.format(inserted.rowcount))
 
 
-def add_years(years, rows_per_year=math.inf, batch_size=BATCH_SIZE):
+def add_years(years,
+              rows_per_year=Ingest.ROWS_PER_YEAR,
+              batch_size=Ingest.BATCH_SIZE):
+
     # exclude years that are already in the db
     has_years = info.years()
     years = [year for year in years if year not in has_years]

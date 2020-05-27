@@ -1,9 +1,9 @@
-import os
 import db
 from .create_table import create_table
+from settings import Picklebase
 
 
-BATCH_SIZE = int(os.environ.get('PICKLEBASE_BATCH_SIZE', 400000))
+BATCH_SIZE = Picklebase.BATCH_SIZE
 
 
 def create_map_table():

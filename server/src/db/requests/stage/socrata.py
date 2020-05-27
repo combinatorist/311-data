@@ -12,34 +12,26 @@ kwargs are all of the normal socrata kwargs - select, limit, etc.
 """
 
 from sodapy import Socrata
-from config import config
+from settings import Socrata as conf
 
 
 class SocrataClient:
     def __init__(self):
-        conf = config['Socrata']
-
-        domain = conf['DOMAIN']
-        token = conf['TOKEN']
-        timeout = conf['TIMEOUT']
-
-        self.client = Socrata(domain, token, timeout=timeout)
-        self.attempts = conf['ATTEMPTS']
-        self.years = conf
+        self.client = Socrata(conf.DOMAIN, conf.TOKEN, timeout=conf.TIMEOUT)
 
     def __del__(self):
         self.client.close()
 
     def dataset_id(self, year):
-        return self.years['AP' + str(year)]
+        return conf.DATASET_IDS[year]
 
     def get(self, year, **kwargs):
         id = self.dataset_id(year)
-        for attempt in range(self.attempts):
+        for attempt in range(conf.ATTEMPTS):
             try:
                 return self.client.get(id, **kwargs)
             except Exception as e:
-                if attempt < self.attempts - 1:
+                if attempt < conf.ATTEMPTS - 1:
                     continue
                 else:
                     raise e

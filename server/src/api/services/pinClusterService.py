@@ -2,7 +2,7 @@ import pysupercluster
 import pandas as pd
 import hashlib
 import json
-from utils.redis import cache
+import cache
 from .dataService import DataService
 
 

@@ -1,6 +1,6 @@
 import pandas as pd
 import db
-from utils.picklebase import pb
+import pb
 
 
 class DataService(object):
