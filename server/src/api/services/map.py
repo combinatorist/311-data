@@ -1,5 +1,4 @@
 import pysupercluster
-import pandas as pd
 import hashlib
 import json
 import cache

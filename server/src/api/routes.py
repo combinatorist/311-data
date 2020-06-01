@@ -1,16 +1,10 @@
 from sanic.response import json
-from datetime import datetime
-from multiprocessing import cpu_count
-
-import utils.resource as resource
-from settings import Version, Github
-import db
-
 from .services import data as data_svc
 from .services import visualizations as vis_svc
 from .services import comparison as comp_svc
 from .services import github as github_svc
 from .services import map as map_svc
+from .services import status as status_svc
 
 
 async def index(request):
@@ -18,28 +12,18 @@ async def index(request):
 
 
 async def apistatus(request):
-    currentTime = datetime.utcnow().replace(microsecond=0)
-    semVersion = '{}.{}.{}'.format(Version.MAJOR, Version.MINOR, Version.PATCH)
-
-    return json({
-        'currentTime': f'{currentTime.isoformat()}Z',
-        'gitSha': Github.SHA,
-        'version': semVersion,
-        'lastPulled': f'{db.info.last_updated().isoformat()}Z'})
+    data = await status_svc.api()
+    return json(data)
 
 
 async def system(request):
-    return json({
-        'cpuCount': cpu_count(),
-        'pageSize': resource.page_size(),
-        'limits': resource.limits(),
-        'usage': resource.usage()})
+    data = await status_svc.system()
+    return json(data)
 
 
 async def database(request):
-    return json({
-        'tables': db.info.tables(),
-        'rows': db.info.rows()})
+    data = await status_svc.database()
+    return json(data)
 
 
 async def requestDetails(request, srnumber):
