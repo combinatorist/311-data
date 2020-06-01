@@ -48,6 +48,7 @@ def frequency_comparison(startDate=None,
         }
     }
 
+
 def ttc_comparison(startDate=None,
                    endDate=None,
                    requestTypes=[],
@@ -91,6 +92,7 @@ def ttc_comparison(startDate=None,
         }
     }
 
+
 def counts_comparison(startDate=None,
                       endDate=None,
                       requestTypes=[],
@@ -127,6 +129,7 @@ def counts_comparison(startDate=None,
             'source': set2data
         }
     }
+
 
 async def comparison(type=None,
                      startDate=None,

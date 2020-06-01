@@ -2,9 +2,6 @@ from sanic.response import json
 from datetime import datetime
 from multiprocessing import cpu_count
 
-from .services.pinClusterService import PinClusterService
-from .services.heatmapService import HeatmapService
-
 import utils.resource as resource
 from settings import Version, Github
 import db
@@ -13,6 +10,7 @@ from .services import data as data_svc
 from .services import visualizations as vis_svc
 from .services import comparison as comp_svc
 from .services import github as github_svc
+from .services import map as map_svc
 
 
 async def index(request):
@@ -50,8 +48,6 @@ async def requestDetails(request, srnumber):
 
 
 async def pinClusters(request):
-    worker = PinClusterService()
-
     args = request.json
     filters = {
         'startDate': args.get('startDate', None),
@@ -63,13 +59,11 @@ async def pinClusters(request):
     bounds = args.get('bounds', {})
     options = args.get('options', {})
 
-    clusters = await worker.get_pin_clusters(filters, zoom, bounds, options)
-    return json(clusters)
+    data = await map_svc.clusters(filters, zoom, bounds, options)
+    return json(data)
 
 
 async def heatmap(request):
-    worker = HeatmapService()
-
     args = request.json
     filters = {
         'startDate': args.get('startDate', None),
@@ -78,8 +72,8 @@ async def heatmap(request):
         'ncList': args.get('ncList', [])
     }
 
-    heatmap = await worker.get_heatmap(filters)
-    return json(heatmap)
+    data = await map_svc.heatmap(filters)
+    return json(data)
 
 
 async def visualizations(request):
