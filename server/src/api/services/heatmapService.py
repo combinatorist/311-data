@@ -17,14 +17,7 @@ class HeatmapService(object):
 
         fields = ['latitude', 'longitude']
         if pins is None:
-            filters = data.standardFilters(
-                filters['startDate'],
-                filters['endDate'],
-                filters['requestTypes'],
-                filters['ncList'])
-
-            pins = data.query(fields, filters, table='map')
-            pins = pd.DataFrame(pins, columns=fields)
+            pins = data.standard_query(fields, filters, table='map')
         else:
             pins = pins[fields]
 

@@ -17,10 +17,13 @@ class VisualizationsService(object):
             '_daystoclose',
             'requestsource']
 
-        filters = data.standardFilters(
-            start, end, requestTypes, ncList)
+        filters = {
+            'startDate': start,
+            'endDate': end,
+            'requestTypes': requestTypes,
+            'ncList': ncList}
 
-        df = data.query(fields, filters, table='vis')
+        df = data.standard_query(fields, filters, table='vis')
 
         inner_df = df.loc[
             (df['createddate'] >= startDate) &

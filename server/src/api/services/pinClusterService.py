@@ -16,21 +16,13 @@ class PinClusterService(object):
         key = self.pins_key(filters)
         pins = cache.get(key)
 
-        if pins is None:
-            fields = [
+        if pins is None:                
+            pins = data.standard_query([
                 'srnumber',
                 'requesttype',
                 'latitude',
-                'longitude']
-
-            filters = data.standardFilters(
-                filters['startDate'],
-                filters['endDate'],
-                filters['requestTypes'],
-                filters['ncList'])
-
-            pins = data.query(fields, filters, table='map')
-            pins = pd.DataFrame(pins, columns=fields)
+                'longitude'
+            ], filters, table='map')
 
             cache.set(key, pins)
 
