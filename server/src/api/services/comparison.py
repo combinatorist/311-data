@@ -1,5 +1,5 @@
 from . import data
-from utils.stats import box_plots, date_bins, date_histograms, counts
+from .stats import box_plots, date_bins, date_histograms, counts
 
 
 def frequency_comparison(startDate=None,
