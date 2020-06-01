@@ -11,22 +11,21 @@ class ComparisonService(object):
                              set2={'district': None, 'list': []}):
 
         def get_data(district, items, bins, start, end):
-            common = {
+            filters = {
                 'startDate': start,
                 'endDate': end,
                 'requestTypes': requestTypes
             }
 
             if district == 'nc':
-                common['ncList'] = items
+                filters['ncList'] = items
                 groupField = 'nc'
             elif district == 'cc':
-                common['cdList'] = items
+                filters['cdList'] = items
                 groupField = 'cd'
 
             fields = [groupField, 'createddate']
-            filters = data.comparisonFilters(**common)
-            df = data.query(fields, filters, table='vis')
+            df = data.comparison_query(fields, filters, table='vis')
 
             return date_histograms(
                 df,
@@ -59,22 +58,21 @@ class ComparisonService(object):
                        set2={'district': None, 'list': []}):
 
         def get_data(district, items):
-            common = {
+            filters = {
                 'startDate': startDate,
                 'endDate': endDate,
                 'requestTypes': requestTypes
             }
 
             if district == 'nc':
-                common['ncList'] = items
+                filters['ncList'] = items
                 groupField = 'nc'
             elif district == 'cc':
-                common['cdList'] = items
+                filters['cdList'] = items
                 groupField = 'cd'
 
             fields = [groupField, '_daystoclose']
-            filters = data.comparisonFilters(**common)
-            df = data.query(fields, filters, table='vis')
+            df = data.comparison_query(fields, filters, table='vis')
 
             return box_plots(
                 df,
@@ -104,20 +102,19 @@ class ComparisonService(object):
                           set2={'district': None, 'list': []}):
 
         def get_data(district, items):
-            common = {
+            filters = {
                 'startDate': startDate,
                 'endDate': endDate,
                 'requestTypes': requestTypes
             }
 
             if district == 'nc':
-                common['ncList'] = items
+                filters['ncList'] = items
             elif district == 'cc':
-                common['cdList'] = items
+                filters['cdList'] = items
 
             fields = ['requestsource']
-            filters = data.comparisonFilters(**common)
-            df = data.query(fields, filters, table='vis')
+            df = data.comparison_query(fields, filters, table='vis')
 
             return counts(df, 'requestsource')
 
