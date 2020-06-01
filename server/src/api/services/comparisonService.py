@@ -1,11 +1,8 @@
-from .dataService import DataService
+from . import dataAccess
 from utils.stats import box_plots, date_bins, date_histograms, counts
 
 
 class ComparisonService(object):
-    def __init__(self):
-        self.dataAccess = DataService()
-
     def frequency_comparison(self,
                              startDate=None,
                              endDate=None,
@@ -28,8 +25,8 @@ class ComparisonService(object):
                 groupField = 'cd'
 
             fields = [groupField, 'createddate']
-            filters = self.dataAccess.comparisonFilters(**common)
-            df = self.dataAccess.query(fields, filters, table='vis')
+            filters = dataAccess.comparisonFilters(**common)
+            df = dataAccess.query(fields, filters, table='vis')
 
             return date_histograms(
                 df,
@@ -76,8 +73,8 @@ class ComparisonService(object):
                 groupField = 'cd'
 
             fields = [groupField, '_daystoclose']
-            filters = self.dataAccess.comparisonFilters(**common)
-            df = self.dataAccess.query(fields, filters, table='vis')
+            filters = dataAccess.comparisonFilters(**common)
+            df = dataAccess.query(fields, filters, table='vis')
 
             return box_plots(
                 df,
@@ -119,8 +116,8 @@ class ComparisonService(object):
                 common['cdList'] = items
 
             fields = ['requestsource']
-            filters = self.dataAccess.comparisonFilters(**common)
-            df = self.dataAccess.query(fields, filters, table='vis')
+            filters = dataAccess.comparisonFilters(**common)
+            df = dataAccess.query(fields, filters, table='vis')
 
             return counts(df, 'requestsource')
 

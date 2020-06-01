@@ -2,7 +2,7 @@ import pandas as pd
 import hashlib
 import json
 import cache
-from .dataService import DataService
+from . import dataAccess
 
 
 class HeatmapService(object):
@@ -17,8 +17,6 @@ class HeatmapService(object):
 
         fields = ['latitude', 'longitude']
         if pins is None:
-            dataAccess = DataService()
-
             filters = dataAccess.standardFilters(
                 filters['startDate'],
                 filters['endDate'],

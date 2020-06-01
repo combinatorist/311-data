@@ -1,11 +1,8 @@
-from .dataService import DataService
+from . import dataAccess
 from utils.stats import box_plots, date_bins, date_histograms, counts
 
 
 class VisualizationsService(object):
-    def __init__(self):
-        self.dataAccess = DataService()
-
     async def visualizations(self,
                              startDate=None,
                              endDate=None,
@@ -20,10 +17,10 @@ class VisualizationsService(object):
             '_daystoclose',
             'requestsource']
 
-        filters = self.dataAccess.standardFilters(
+        filters = dataAccess.standardFilters(
             start, end, requestTypes, ncList)
 
-        df = self.dataAccess.query(fields, filters, table='vis')
+        df = dataAccess.query(fields, filters, table='vis')
 
         inner_df = df.loc[
             (df['createddate'] >= startDate) &

@@ -3,7 +3,7 @@ import pandas as pd
 import hashlib
 import json
 import cache
-from .dataService import DataService
+from . import dataAccess
 
 
 class PinClusterService(object):
@@ -17,8 +17,6 @@ class PinClusterService(object):
         pins = cache.get(key)
 
         if pins is None:
-            dataAccess = DataService()
-
             fields = [
                 'srnumber',
                 'requesttype',
