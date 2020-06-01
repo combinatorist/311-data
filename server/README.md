@@ -4,30 +4,34 @@
 
 1. Install docker, docker-compose and git
 
-2. copy server/.env.example to server/.env and add a SOCRATA_TOKEN
+2. clone this repo and `cd` into the `server` directory
 
-3. Seed your local DB
+3. create .env file and add socrata token
 
-```
-docker-compose run server python bin/ingest.py
-```
+from this directory run `cp .env.example .env`
+then get a socrata token from someone on the team and add it to the .env file
 
-4. Start devving
+3. build your containers: `docker-compose build`
 
+4. Seed your local DB: `docker-compose run server python bin/ingest.py`
+
+
+## Development
 ```
 docker-compose up --build
 ```
 
-## Running tests
-
-docker-compose run server pytest ..
-
 ## Linting
-
+```
 docker-compose run server flake8 ..
+```
+
+## Running tests (disabled until we get a test DB up)
+```
+docker-compose run server pytest ..
+```
 
 ## Database updates
-
 ```
 docker-compose run server python bin/update.py
 ```
