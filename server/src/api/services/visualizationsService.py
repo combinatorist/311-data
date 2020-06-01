@@ -1,4 +1,4 @@
-from . import dataAccess
+from . import data
 from utils.stats import box_plots, date_bins, date_histograms, counts
 
 
@@ -17,10 +17,10 @@ class VisualizationsService(object):
             '_daystoclose',
             'requestsource']
 
-        filters = dataAccess.standardFilters(
+        filters = data.standardFilters(
             start, end, requestTypes, ncList)
 
-        df = dataAccess.query(fields, filters, table='vis')
+        df = data.query(fields, filters, table='vis')
 
         inner_df = df.loc[
             (df['createddate'] >= startDate) &

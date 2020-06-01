@@ -1,6 +1,6 @@
-from . import dataAccess
+from . import data
 
 
 class RequestDetailService(object):
     async def get_request_detail(self, requestNumber=None):
-        return dataAccess.itemQuery(requestNumber)
+        return data.itemQuery(requestNumber)

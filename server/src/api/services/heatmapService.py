@@ -2,7 +2,7 @@ import pandas as pd
 import hashlib
 import json
 import cache
-from . import dataAccess
+from . import data
 
 
 class HeatmapService(object):
@@ -17,13 +17,13 @@ class HeatmapService(object):
 
         fields = ['latitude', 'longitude']
         if pins is None:
-            filters = dataAccess.standardFilters(
+            filters = data.standardFilters(
                 filters['startDate'],
                 filters['endDate'],
                 filters['requestTypes'],
                 filters['ncList'])
 
-            pins = dataAccess.query(fields, filters, table='map')
+            pins = data.query(fields, filters, table='map')
             pins = pd.DataFrame(pins, columns=fields)
         else:
             pins = pins[fields]

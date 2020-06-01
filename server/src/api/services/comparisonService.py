@@ -1,4 +1,4 @@
-from . import dataAccess
+from . import data
 from utils.stats import box_plots, date_bins, date_histograms, counts
 
 
@@ -25,8 +25,8 @@ class ComparisonService(object):
                 groupField = 'cd'
 
             fields = [groupField, 'createddate']
-            filters = dataAccess.comparisonFilters(**common)
-            df = dataAccess.query(fields, filters, table='vis')
+            filters = data.comparisonFilters(**common)
+            df = data.query(fields, filters, table='vis')
 
             return date_histograms(
                 df,
@@ -73,8 +73,8 @@ class ComparisonService(object):
                 groupField = 'cd'
 
             fields = [groupField, '_daystoclose']
-            filters = dataAccess.comparisonFilters(**common)
-            df = dataAccess.query(fields, filters, table='vis')
+            filters = data.comparisonFilters(**common)
+            df = data.query(fields, filters, table='vis')
 
             return box_plots(
                 df,
@@ -116,8 +116,8 @@ class ComparisonService(object):
                 common['cdList'] = items
 
             fields = ['requestsource']
-            filters = dataAccess.comparisonFilters(**common)
-            df = dataAccess.query(fields, filters, table='vis')
+            filters = data.comparisonFilters(**common)
+            df = data.query(fields, filters, table='vis')
 
             return counts(df, 'requestsource')
 

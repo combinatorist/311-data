@@ -3,7 +3,7 @@ import pandas as pd
 import hashlib
 import json
 import cache
-from . import dataAccess
+from . import data
 
 
 class PinClusterService(object):
@@ -23,13 +23,13 @@ class PinClusterService(object):
                 'latitude',
                 'longitude']
 
-            filters = dataAccess.standardFilters(
+            filters = data.standardFilters(
                 filters['startDate'],
                 filters['endDate'],
                 filters['requestTypes'],
                 filters['ncList'])
 
-            pins = dataAccess.query(fields, filters, table='map')
+            pins = data.query(fields, filters, table='map')
             pins = pd.DataFrame(pins, columns=fields)
 
             cache.set(key, pins)
