@@ -65,3 +65,7 @@ class Ingest:
     YEARS = env('INGEST_YEARS', to.LIST_OF_INTS)
     BATCH_SIZE = env('INGEST_BATCH_SIZE', to.INT)
     ROWS_PER_YEAR = env('INGEST_ROWS_PER_YEAR', to.INT)
+
+
+class Slack:
+    WEBHOOK_URL = env('SLACK_WEBHOOK_URL')

@@ -3,6 +3,7 @@ from sanic_cors import CORS
 from sanic_compress import Compress
 from multiprocessing import cpu_count
 import api.routes as R
+from api.errors import ErrorHandler
 from utils.sanic import add_performance_header
 from utils.log import log_heading
 from settings import Server
@@ -52,6 +53,8 @@ if __name__ == '__main__':
 
     for route, (methods, handler) in routes.items():
         app.add_route(handler, route, methods)
+
+    app.error_handler = ErrorHandler()
 
     if Server.DEBUG:
         add_performance_header(app)
