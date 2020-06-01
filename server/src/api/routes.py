@@ -1,7 +1,4 @@
-from sanic import Sanic
 from sanic.response import json
-from sanic_cors import CORS
-from sanic_compress import Compress
 from datetime import datetime
 from multiprocessing import cpu_count
 
@@ -12,23 +9,16 @@ from .services.visualizationsService import VisualizationsService
 from .services.comparisonService import ComparisonService
 from .services.feedbackService import FeedbackService
 
-from utils.sanic import add_performance_header
 import utils.resource as resource
-from settings import Version, Github, Server
+from settings import Version, Github
 import db
 
-app = Sanic(__name__)
-CORS(app)
-Compress(app)
 
-
-@app.route('/')
 async def index(request):
     return json('You hit the index')
 
 
-@app.route('/apistatus', methods=["GET", "HEAD"])
-async def healthcheck(request):
+async def apistatus(request):
     currentTime = datetime.utcnow().replace(microsecond=0)
     semVersion = '{}.{}.{}'.format(Version.MAJOR, Version.MINOR, Version.PATCH)
 
@@ -39,7 +29,6 @@ async def healthcheck(request):
         'lastPulled': f'{db.info.last_updated().isoformat()}Z'})
 
 
-@app.route('/system')
 async def system(request):
     return json({
         'cpuCount': cpu_count(),
@@ -48,14 +37,19 @@ async def system(request):
         'usage': resource.usage()})
 
 
-@app.route('/database')
 async def database(request):
     return json({
         'tables': db.info.tables(),
         'rows': db.info.rows()})
 
 
-@app.route('/pin-clusters', methods=["POST"])
+async def requestDetails(request, srnumber):
+    detail_worker = RequestDetailService()
+
+    return_data = await detail_worker.get_request_detail(srnumber)
+    return json(return_data)
+
+
 async def pinClusters(request):
     worker = PinClusterService()
 
@@ -74,7 +68,6 @@ async def pinClusters(request):
     return json(clusters)
 
 
-@app.route('/heatmap', methods=["POST"])
 async def heatmap(request):
     worker = HeatmapService()
 
@@ -90,15 +83,6 @@ async def heatmap(request):
     return json(heatmap)
 
 
-@app.route('/servicerequest/<srnumber>', methods=["GET"])
-async def requestDetails(request, srnumber):
-    detail_worker = RequestDetailService()
-
-    return_data = await detail_worker.get_request_detail(srnumber)
-    return json(return_data)
-
-
-@app.route('/visualizations', methods=["POST"])
 async def visualizations(request):
     worker = VisualizationsService()
 
@@ -115,7 +99,6 @@ async def visualizations(request):
     return json(data)
 
 
-@app.route('/comparison/<type>', methods=["POST"])
 async def comparison(request, type):
     worker = ComparisonService()
 
@@ -135,8 +118,7 @@ async def comparison(request, type):
     return json(data)
 
 
-@app.route('/feedback', methods=["POST"])
-async def handle_feedback(request):
+async def feedback(request):
     github_worker = FeedbackService()
     postArgs = request.json
     title = postArgs.get('title', None)
@@ -145,23 +127,3 @@ async def handle_feedback(request):
     issue_id = await github_worker.create_issue(title, body)
     response = await github_worker.add_issue_to_project(issue_id)
     return json(response)
-
-
-def start():
-    if Server.DEBUG:
-        add_performance_header(app)
-
-    workers = Server.WORKERS
-    if workers == -1:
-        workers = max(cpu_count() // 2, 1)
-
-    app.run(
-        port=Server.PORT,
-        host=Server.HOST,
-        debug=Server.DEBUG,
-        workers=workers)
-
-
-def stop():
-    print('stopping api')
-    app.stop()
