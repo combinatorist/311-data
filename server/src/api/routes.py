@@ -4,7 +4,6 @@ from multiprocessing import cpu_count
 
 from .services.pinClusterService import PinClusterService
 from .services.heatmapService import HeatmapService
-from .services.feedbackService import FeedbackService
 
 import utils.resource as resource
 from settings import Version, Github
@@ -13,6 +12,7 @@ import db
 from .services import data as data_svc
 from .services import visualizations as vis_svc
 from .services import comparison as comp_svc
+from .services import github as github_svc
 
 
 async def index(request):
@@ -52,16 +52,16 @@ async def requestDetails(request, srnumber):
 async def pinClusters(request):
     worker = PinClusterService()
 
-    postArgs = request.json
+    args = request.json
     filters = {
-        'startDate': postArgs.get('startDate', None),
-        'endDate': postArgs.get('endDate', None),
-        'requestTypes': postArgs.get('requestTypes', []),
-        'ncList': postArgs.get('ncList', [])
+        'startDate': args.get('startDate', None),
+        'endDate': args.get('endDate', None),
+        'requestTypes': args.get('requestTypes', []),
+        'ncList': args.get('ncList', [])
     }
-    zoom = int(postArgs.get('zoom', 0))
-    bounds = postArgs.get('bounds', {})
-    options = postArgs.get('options', {})
+    zoom = int(args.get('zoom', 0))
+    bounds = args.get('bounds', {})
+    options = args.get('options', {})
 
     clusters = await worker.get_pin_clusters(filters, zoom, bounds, options)
     return json(clusters)
@@ -70,12 +70,12 @@ async def pinClusters(request):
 async def heatmap(request):
     worker = HeatmapService()
 
-    postArgs = request.json
+    args = request.json
     filters = {
-        'startDate': postArgs.get('startDate', None),
-        'endDate': postArgs.get('endDate', None),
-        'requestTypes': postArgs.get('requestTypes', []),
-        'ncList': postArgs.get('ncList', [])
+        'startDate': args.get('startDate', None),
+        'endDate': args.get('endDate', None),
+        'requestTypes': args.get('requestTypes', []),
+        'ncList': args.get('ncList', [])
     }
 
     heatmap = await worker.get_heatmap(filters)
@@ -83,11 +83,11 @@ async def heatmap(request):
 
 
 async def visualizations(request):
-    postArgs = request.json
-    start = postArgs.get('startDate', None)
-    end = postArgs.get('endDate', None)
-    ncs = postArgs.get('ncList', [])
-    requests = postArgs.get('requestTypes', [])
+    args = request.json
+    start = args.get('startDate', None)
+    end = args.get('endDate', None)
+    ncs = args.get('ncList', [])
+    requests = args.get('requestTypes', [])
 
     data = await vis_svc.visualizations(startDate=start,
                                         endDate=end,
@@ -97,12 +97,12 @@ async def visualizations(request):
 
 
 async def comparison(request, type):
-    postArgs = request.json
-    startDate = postArgs.get('startDate', None)
-    endDate = postArgs.get('endDate', None)
-    requestTypes = postArgs.get('requestTypes', [])
-    set1 = postArgs.get('set1', None)
-    set2 = postArgs.get('set2', None)
+    args = request.json
+    startDate = args.get('startDate', None)
+    endDate = args.get('endDate', None)
+    requestTypes = args.get('requestTypes', [])
+    set1 = args.get('set1', None)
+    set2 = args.get('set2', None)
 
     data = await comp_svc.comparison(type=type,
                                      startDate=startDate,
@@ -114,11 +114,10 @@ async def comparison(request, type):
 
 
 async def feedback(request):
-    github_worker = FeedbackService()
-    postArgs = request.json
-    title = postArgs.get('title', None)
-    body = postArgs.get('body', None)
+    args = request.json
+    title = args.get('title', None)
+    body = args.get('body', None)
 
-    issue_id = await github_worker.create_issue(title, body)
-    response = await github_worker.add_issue_to_project(issue_id)
+    issue_id = await github_svc.create_issue(title, body)
+    response = await github_svc.add_issue_to_project(issue_id)
     return json(response)
