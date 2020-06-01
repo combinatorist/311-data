@@ -4,14 +4,15 @@ from multiprocessing import cpu_count
 
 from .services.pinClusterService import PinClusterService
 from .services.heatmapService import HeatmapService
-from .services.requestDetailService import RequestDetailService
-from .services.visualizationsService import VisualizationsService
-from .services.comparisonService import ComparisonService
 from .services.feedbackService import FeedbackService
 
 import utils.resource as resource
 from settings import Version, Github
 import db
+
+from .services import data as data_svc
+from .services import visualizations as vis_svc
+from .services import comparison as comp_svc
 
 
 async def index(request):
@@ -44,10 +45,8 @@ async def database(request):
 
 
 async def requestDetails(request, srnumber):
-    detail_worker = RequestDetailService()
-
-    return_data = await detail_worker.get_request_detail(srnumber)
-    return json(return_data)
+    data = data_svc.item_query(srnumber)
+    return json(data)
 
 
 async def pinClusters(request):
@@ -84,24 +83,20 @@ async def heatmap(request):
 
 
 async def visualizations(request):
-    worker = VisualizationsService()
-
     postArgs = request.json
     start = postArgs.get('startDate', None)
     end = postArgs.get('endDate', None)
     ncs = postArgs.get('ncList', [])
     requests = postArgs.get('requestTypes', [])
 
-    data = await worker.visualizations(startDate=start,
-                                       endDate=end,
-                                       requestTypes=requests,
-                                       ncList=ncs)
+    data = await vis_svc.visualizations(startDate=start,
+                                        endDate=end,
+                                        requestTypes=requests,
+                                        ncList=ncs)
     return json(data)
 
 
 async def comparison(request, type):
-    worker = ComparisonService()
-
     postArgs = request.json
     startDate = postArgs.get('startDate', None)
     endDate = postArgs.get('endDate', None)
@@ -109,12 +104,12 @@ async def comparison(request, type):
     set1 = postArgs.get('set1', None)
     set2 = postArgs.get('set2', None)
 
-    data = await worker.comparison(type=type,
-                                   startDate=startDate,
-                                   endDate=endDate,
-                                   requestTypes=requestTypes,
-                                   set1=set1,
-                                   set2=set2)
+    data = await comp_svc.comparison(type=type,
+                                     startDate=startDate,
+                                     endDate=endDate,
+                                     requestTypes=requestTypes,
+                                     set1=set1,
+                                     set2=set2)
     return json(data)
 
 
