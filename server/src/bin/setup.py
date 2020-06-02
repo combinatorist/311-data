@@ -55,7 +55,9 @@ if __name__ == '__main__':
     check_db()
 
     import pb
-    if pb.enabled and not pb.available():
+    if not pb.enabled:
+        pb.clear_data()
+    elif not pb.available():
         log_heading('populating picklebase', spacing=(1, 0))
         pb.populate()
 
