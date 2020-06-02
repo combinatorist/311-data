@@ -12,8 +12,7 @@ def frequency_comparison(startDate,
         filters = {
             'startDate': start,
             'endDate': end,
-            'requestTypes': requestTypes
-        }
+            'requestTypes': requestTypes}
 
         if district == 'nc':
             filters['ncList'] = items
@@ -40,13 +39,10 @@ def frequency_comparison(startDate,
         'bins': list(bins.astype(str)),
         'set1': {
             'district': set1['district'],
-            'counts': set1data
-        },
+            'counts': set1data},
         'set2': {
             'district': set2['district'],
-            'counts': set2data
-        }
-    }
+            'counts': set2data}}
 
 
 def ttc_comparison(startDate,
@@ -59,8 +55,7 @@ def ttc_comparison(startDate,
         filters = {
             'startDate': startDate,
             'endDate': endDate,
-            'requestTypes': requestTypes
-        }
+            'requestTypes': requestTypes}
 
         if district == 'nc':
             filters['ncList'] = items
@@ -84,13 +79,10 @@ def ttc_comparison(startDate,
     return {
         'set1': {
             'district': set1['district'],
-            'data': set1data
-        },
+            'data': set1data},
         'set2': {
             'district': set2['district'],
-            'data': set2data
-        }
-    }
+            'data': set2data}}
 
 
 def counts_comparison(startDate,
@@ -103,8 +95,7 @@ def counts_comparison(startDate,
         filters = {
             'startDate': startDate,
             'endDate': endDate,
-            'requestTypes': requestTypes
-        }
+            'requestTypes': requestTypes}
 
         if district == 'nc':
             filters['ncList'] = items
@@ -122,13 +113,10 @@ def counts_comparison(startDate,
     return {
         'set1': {
             'district': set1['district'],
-            'source': set1data
-        },
+            'source': set1data},
         'set2': {
             'district': set2['district'],
-            'source': set2data
-        }
-    }
+            'source': set2data}}
 
 
 async def comparison(type,

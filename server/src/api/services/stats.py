@@ -47,8 +47,7 @@ def box_plot(arr, C=1.5):
         'whiskerMin': whiskerMin,
         'whiskerMax': whiskerMax,
         'count': len(arr),
-        'outlierCount': len(outliers)
-    }
+        'outlierCount': len(outliers)}
 
 
 def box_plots(df, plotField, groupField, groupFieldItems):

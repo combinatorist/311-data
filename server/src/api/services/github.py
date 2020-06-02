@@ -22,15 +22,15 @@ async def create_issue(title,
     """
     headers = {
         "Authorization": "token {}".format(TOKEN),
-        "Accept": "application/vnd.github.v3+json"
-    }
+        "Accept": "application/vnd.github.v3+json"}
+
     data = {
         'title': title,
         'body': body,
         'labels': labels,
         'milestone': milestone,
-        'assignees': assignees
-    }
+        'assignees': assignees}
+
     payload = dumps(data)
 
     async with requests.Session() as session:
@@ -63,12 +63,12 @@ async def add_issue_to_project(issue_id, content_type='Issue'):
     """
     headers = {
         "Authorization": "token {}".format(TOKEN),
-        "Accept": "application/vnd.github.inertia-preview+json"
-    }
+        "Accept": "application/vnd.github.inertia-preview+json"}
+
     data = {
         'content_id': issue_id,
-        'content_type': content_type
-    }
+        'content_type': content_type}
+
     payload = dumps(data)
 
     async with requests.Session() as session:

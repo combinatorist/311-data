@@ -41,8 +41,7 @@ routes = {
         ['POST'], R.comparison),
 
     '/feedback': (
-        ['POST'], R.feedback)
-}
+        ['POST'], R.feedback)}
 
 
 if __name__ == '__main__':

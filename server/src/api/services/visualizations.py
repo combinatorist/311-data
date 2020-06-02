@@ -35,8 +35,7 @@ async def visualizations(startDate,
                 dateField='createddate',
                 bins=bins,
                 groupField='requesttype',
-                groupFieldItems=requestTypes)
-        },
+                groupFieldItems=requestTypes)},
 
         'timeToClose': box_plots(
             inner_df,
@@ -46,6 +45,5 @@ async def visualizations(startDate,
 
         'counts': {
             'type': counts(inner_df, groupField='requesttype'),
-            'source': counts(inner_df, groupField='requestsource')
-        }
+            'source': counts(inner_df, groupField='requestsource')}
     }
