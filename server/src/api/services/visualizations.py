@@ -2,8 +2,8 @@ from . import data
 from .stats import box_plots, date_bins, date_histograms, counts
 
 
-async def visualizations(startDate=None,
-                         endDate=None,
+async def visualizations(startDate,
+                         endDate,
                          requestTypes=[],
                          ncList=[]):
 

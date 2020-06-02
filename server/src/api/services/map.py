@@ -28,7 +28,7 @@ def get_pins(filters):
     return pins
 
 
-def get_clusters(pins, zoom, bounds, options={}):
+def get_clusters(pins, zoom, bounds, options):
     if len(pins) == 0:
         return []
 
@@ -64,12 +64,35 @@ def get_clusters(pins, zoom, bounds, options={}):
     return clusters
 
 
-async def clusters(filters, zoom, bounds, options):
+async def clusters(startDate,
+                   endDate,
+                   requestTypes=[],
+                   ncList=[],
+                   zoom=0,
+                   bounds={},
+                   options={}):
+
+    filters = {
+        'startDate': startDate,
+        'endDate': endDate,
+        'requestTypes': requestTypes,
+        'ncList': ncList}
+
     pins = get_pins(filters)
     return get_clusters(pins, zoom, bounds, options)
 
 
-async def heatmap(filters):
+async def heatmap(startDate,
+                  endDate,
+                  requestTypes=[],
+                  ncList=[]):
+
+    filters = {
+        'startDate': startDate,
+        'endDate': endDate,
+        'requestTypes': requestTypes,
+        'ncList': ncList}
+
     key = pins_key(filters)
     pins = cache.get(key)
 

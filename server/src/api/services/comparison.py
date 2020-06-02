@@ -2,8 +2,8 @@ from . import data
 from .stats import box_plots, date_bins, date_histograms, counts
 
 
-def frequency_comparison(startDate=None,
-                         endDate=None,
+def frequency_comparison(startDate,
+                         endDate,
                          requestTypes=[],
                          set1={'district': None, 'list': []},
                          set2={'district': None, 'list': []}):
@@ -49,8 +49,8 @@ def frequency_comparison(startDate=None,
     }
 
 
-def ttc_comparison(startDate=None,
-                   endDate=None,
+def ttc_comparison(startDate,
+                   endDate,
                    requestTypes=[],
                    set1={'district': None, 'list': []},
                    set2={'district': None, 'list': []}):
@@ -93,8 +93,8 @@ def ttc_comparison(startDate=None,
     }
 
 
-def counts_comparison(startDate=None,
-                      endDate=None,
+def counts_comparison(startDate,
+                      endDate,
                       requestTypes=[],
                       set1={'district': None, 'list': []},
                       set2={'district': None, 'list': []}):
@@ -131,9 +131,9 @@ def counts_comparison(startDate=None,
     }
 
 
-async def comparison(type=None,
-                     startDate=None,
-                     endDate=None,
+async def comparison(type,
+                     startDate,
+                     endDate,
                      requestTypes=[],
                      set1={'district': None, 'list': []},
                      set2={'district': None, 'list': []}):
