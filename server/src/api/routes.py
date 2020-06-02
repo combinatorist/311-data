@@ -1,4 +1,5 @@
 from sanic.response import json
+from .errors import to
 from .services import (
     data as data_svc,
     visualizations as vis_svc,
@@ -6,7 +7,6 @@ from .services import (
     github as github_svc,
     map as map_svc,
     status as status_svc)
-from .errors import to
 
 
 async def index(request):
@@ -34,72 +34,55 @@ async def requestDetails(request, srnumber):
 
 
 async def pinClusters(request):
-    args = request.json
+    data = await map_svc.clusters(**to.parse(request.json, {
+        'startDate': to.req.DATE,
+        'endDate': to.req.DATE,
+        'requestTypes': to.opt.LIST_OF_STR,
+        'ncList': to.opt.LIST_OF_INT,
+        'zoom': to.opt.INT,
+        'bounds': to.opt.DICT_OF_INT,
+        'options': to.opt.DICT_OF_INT}))
 
-    startDate = args.get('startDate', None)
-    endDate = args.get('endDate', None)
-    requestTypes = args.get('requestTypes', [])
-    ncList = args.get('ncList', [])
-    zoom = int(args.get('zoom', 0))
-    bounds = args.get('bounds', {})
-    options = args.get('options', {})
-
-    data = await map_svc.clusters(startDate=startDate,
-                                  endDate=endDate,
-                                  requestTypes=requestTypes,
-                                  ncList=ncList,
-                                  zoom=zoom,
-                                  bounds=bounds,
-                                  options=options)
     return json(data)
 
 
 async def heatmap(request):
-    data = await map_svc.heatmap(**to.unpack(request.json, {
+    data = await map_svc.heatmap(**to.parse(request.json, {
         'startDate': to.req.DATE,
         'endDate': to.req.DATE,
         'requestTypes': to.opt.LIST_OF_STR,
-        'ncList': to.opt.LIST_OF_INT
-    }))
+        'ncList': to.opt.LIST_OF_INT}))
 
     return json(data)
 
 
 async def visualizations(request):
-    data = await vis_svc.visualizations(**to.unpack(request.json, {
+    data = await vis_svc.visualizations(**to.parse(request.json, {
         'startDate': to.req.DATE,
         'endDate': to.req.DATE,
         'requestTypes': to.opt.LIST_OF_STR,
-        'ncList': to.opt.LIST_OF_INT
-    }))
+        'ncList': to.opt.LIST_OF_INT}))
 
     return json(data)
 
 
 async def comparison(request, type):
-    args = request.json
+    data = await comp_svc.comparison(type, **to.parse(request.json, {
+        'startDate': to.req.DATE,
+        'endDate': to.req.DATE,
+        'requestTypes': to.opt.LIST_OF_STR,
+        'set1': to.req.COMPARISON_SET,
+        'set2': to.req.COMPARISON_SET}))
 
-    startDate = args.get('startDate', None)
-    endDate = args.get('endDate', None)
-    requestTypes = args.get('requestTypes', [])
-    set1 = args.get('set1', None)
-    set2 = args.get('set2', None)
-
-    data = await comp_svc.comparison(type=type,
-                                     startDate=startDate,
-                                     endDate=endDate,
-                                     requestTypes=requestTypes,
-                                     set1=set1,
-                                     set2=set2)
     return json(data)
 
 
 async def feedback(request):
-    args = request.json
+    args = to.parse(request.json, {
+        'title': to.req.STR,
+        'body': to.req.STR})
 
-    title = args.get('title', None)
-    body = args.get('body', None)
-
-    issue_id = await github_svc.create_issue(title, body)
+    issue_id = await github_svc.create_issue(args['title'], args['body'])
     response = await github_svc.add_issue_to_project(issue_id)
+
     return json(response)
