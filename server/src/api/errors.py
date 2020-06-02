@@ -6,6 +6,7 @@ from settings import Slack
 
 
 SLACK_URL = Slack.WEBHOOK_URL
+ERROR_CODES = Slack.ERROR_CODES
 
 
 class ErrorHandler(EH):
@@ -14,13 +15,16 @@ class ErrorHandler(EH):
 
     async def default(self, request, exception):
         status_code = getattr(exception, 'status_code', 500)
-        if status_code == 500:
-            await self.send_to_slack(request, exception)
-            return text(exception, 500)
+
+        if status_code in ERROR_CODES:
+            await self.send_to_slack(request, exception, status_code)
+
+        if status_code in [401, 500]:
+            return text(exception, status_code)
         else:
             return super().default(request, exception)
 
-    async def send_to_slack(self, request, exception):
+    async def send_to_slack(self, request, exception, status_code):
         if SLACK_URL is None:
             return
 
@@ -38,7 +42,7 @@ class ErrorHandler(EH):
 ```
 {request.method} {request.path}{qs} {params}
 
-ERROR
+{status_code} ERROR
 {str(exception)}
 ```
         """
