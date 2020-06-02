@@ -55,17 +55,13 @@ async def pinClusters(request):
 
 
 async def heatmap(request):
-    args = request.json
+    data = await map_svc.heatmap(**to.unpack(request.json, {
+        'startDate': to.req.DATE,
+        'endDate': to.req.DATE,
+        'requestTypes': to.opt.LIST_OF_STR,
+        'ncList': to.opt.LIST_OF_INT
+    }))
 
-    startDate = args.get('startDate', None)
-    endDate = args.get('endDate', None)
-    requestTypes = args.get('requestTypes', [])
-    ncList = args.get('ncList', [])
-
-    data = await map_svc.heatmap(startDate=startDate,
-                                 endDate=endDate,
-                                 requestTypes=requestTypes,
-                                 ncList=ncList)
     return json(data)
 
 

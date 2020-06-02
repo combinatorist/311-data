@@ -6,7 +6,7 @@ from . import data
 
 
 def pins_key(filters):
-    filters_json = json.dumps(filters, sort_keys=True).encode('utf-8')
+    filters_json = json.dumps(str(filters), sort_keys=True).encode('utf-8')
     hashed_json = hashlib.md5(filters_json).hexdigest()
     return 'filters:{}:pins'.format(hashed_json)
 
