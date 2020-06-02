@@ -27,7 +27,7 @@ class to:
             return int(value)
 
         if to_type == to.LIST_OF_INTS:
-            return [int(item) for item in value.split(',')]
+            return [int(item) for item in value[1:-1].split(',')]
 
         if to_type == to.ABS_PATH:
             if os.path.isabs(value):
