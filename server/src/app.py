@@ -26,10 +26,10 @@ routes = {
         ['GET'], R.system),
 
     '/servicerequest/<srnumber>': (
-        ['GET'], R.requestDetails),
+        ['GET'], R.request_detail),
 
     '/pin-clusters': (
-        ['POST'], R.pinClusters),
+        ['POST'], R.pin_clusters),
 
     '/heatmap': (
         ['POST'], R.heatmap),

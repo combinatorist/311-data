@@ -28,12 +28,12 @@ async def database(request):
     return json(data)
 
 
-async def requestDetails(request, srnumber):
+async def request_detail(request, srnumber):
     data = data_svc.item_query(srnumber)
     return json(data)
 
 
-async def pinClusters(request):
+async def pin_clusters(request):
     data = await map_svc.clusters(**to.parse(request.json, {
         'startDate': to.req.DATE,
         'endDate': to.req.DATE,
