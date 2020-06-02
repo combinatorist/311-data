@@ -40,7 +40,7 @@ async def pin_clusters(request):
         'requestTypes': to.opt.LIST_OF_STR,
         'ncList': to.opt.LIST_OF_INT,
         'zoom': to.opt.INT,
-        'bounds': to.opt.DICT_OF_INT,
+        'bounds': to.opt.DICT_OF_FLOAT,
         'options': to.opt.DICT_OF_INT}))
 
     return json(data)

@@ -68,6 +68,7 @@ class to:
         LIST_OF_INT = 'LIST_OF_INT'
         LIST_OF_STR = 'LIST_OF_STR'
         DICT_OF_INT = 'DICT_OF_INT'
+        DICT_OF_FLOAT = 'DICT_OF_FLOAT'
 
     class req:
         STR = 'STR'
@@ -89,6 +90,9 @@ class to:
 
         elif to_type == to.opt.DICT_OF_INT:
             return {key: int(val) for key, val in value.items()}
+
+        elif to_type == to.opt.DICT_OF_FLOAT:
+            return {key: float(val) for key, val in value.items()}
 
         elif to_type == to.req.STR:
             return str(value)
