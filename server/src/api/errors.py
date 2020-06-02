@@ -19,21 +19,21 @@ class ErrorHandler(EH):
 
     async def default(self, request, exception):
         status_code = getattr(exception, 'status_code', 500)
+        trace = traceback.format_exc()
 
         if status_code in ERROR_CODES:
-            await self.send_to_slack(request, exception, status_code)
+            await self.send_to_slack(request, trace, status_code)
 
         if status_code == 400:
             log(f'400 ERROR: {exception}', color=log_colors.WARNING)
             return text(exception, status_code)
         elif status_code == 500:
-            tb = traceback.format_exc()
-            log(tb, color=log_colors.FAIL)
-            return text(tb, status_code)
+            log(trace, color=log_colors.FAIL)
+            return text(trace, status_code)
         else:
             return super().default(request, exception)
 
-    async def send_to_slack(self, request, exception, status_code):
+    async def send_to_slack(self, request, trace, status_code):
         if SLACK_URL is None:
             return
 
@@ -52,8 +52,7 @@ class ErrorHandler(EH):
 {request.method} {request.path}{qs} {params}
 
 {status_code} ERROR
-{str(exception)}
-```
+{trace}```
         """
 
         async with requests.Session() as session:
