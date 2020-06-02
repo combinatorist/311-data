@@ -4,7 +4,7 @@ from . import stage
 
 def create():
     stage.create_table()
-    exec_sql(f"""
+    exec_sql("""
         ALTER TABLE stage RENAME TO requests;
         ALTER TABLE requests DROP COLUMN id;
         ALTER TABLE requests ADD PRIMARY KEY (srnumber);

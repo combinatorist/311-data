@@ -17,7 +17,7 @@ def __update_requests_table(year):
     if year == 2017:
         exec_sql("DELETE FROM stage WHERE srnumber = '1-870704814'")
 
-    inserted = exec_sql(f"""
+    inserted = exec_sql("""
         INSERT INTO requests SELECT * FROM stage
     """)
     log('\tInserted rows: {}'.format(inserted.rowcount))

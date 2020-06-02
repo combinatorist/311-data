@@ -3,7 +3,7 @@ from ..conn import exec_sql
 
 
 def create():
-    exec_sql(f"""
+    exec_sql("""
         CREATE MATERIALIZED VIEW map AS
             SELECT
                 srnumber,
@@ -23,7 +23,7 @@ def create():
         CREATE INDEX ON map(createddate);
     """)
 
-    exec_sql(f"""
+    exec_sql("""
         CREATE MATERIALIZED VIEW vis AS
             SELECT
                 srnumber,
@@ -45,7 +45,7 @@ def create():
 
 def refresh():
     log('\nRefreshing views')
-    exec_sql(f"""
+    exec_sql("""
         REFRESH MATERIALIZED VIEW CONCURRENTLY map;
         REFRESH MATERIALIZED VIEW CONCURRENTLY vis;
     """)

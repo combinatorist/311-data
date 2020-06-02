@@ -1,4 +1,3 @@
-import math
 from datetime import timedelta
 from settings import Ingest
 from utils.log import log
@@ -11,13 +10,13 @@ from . import views
 def __update_requests_table():
     log('\nUpdating requests table')
 
-    removed = exec_sql(f"""
+    removed = exec_sql("""
         DELETE FROM requests
         WHERE srnumber IN (SELECT srnumber from stage)
     """)
     log('\tDropped rows: {}'.format(removed.rowcount))
 
-    inserted = exec_sql(f"""
+    inserted = exec_sql("""
         INSERT INTO requests SELECT * FROM stage
     """)
     log('\tInserted rows: {}'.format(inserted.rowcount))
@@ -44,7 +43,7 @@ def update():
     for year in years:
         stage.fetch_year(
             year=year,
-            num_rows=math.inf,
+            num_rows=-1,
             batch_size=Ingest.BATCH_SIZE,
             since=last_updated)
     stage.clean_table()
