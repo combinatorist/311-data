@@ -1,10 +1,11 @@
 from sanic.response import json
-from .services import data as data_svc
-from .services import visualizations as vis_svc
-from .services import comparison as comp_svc
-from .services import github as github_svc
-from .services import map as map_svc
-from .services import status as status_svc
+from .services import (
+    data as data_svc,
+    visualizations as vis_svc,
+    comparison as comp_svc,
+    github as github_svc,
+    map as map_svc,
+    status as status_svc)
 
 
 async def index(request):
@@ -33,12 +34,12 @@ async def requestDetails(request, srnumber):
 
 async def pinClusters(request):
     args = request.json
+
     filters = {
         'startDate': args.get('startDate', None),
         'endDate': args.get('endDate', None),
         'requestTypes': args.get('requestTypes', []),
-        'ncList': args.get('ncList', [])
-    }
+        'ncList': args.get('ncList', [])}
     zoom = int(args.get('zoom', 0))
     bounds = args.get('bounds', {})
     options = args.get('options', {})
@@ -49,12 +50,12 @@ async def pinClusters(request):
 
 async def heatmap(request):
     args = request.json
+
     filters = {
         'startDate': args.get('startDate', None),
         'endDate': args.get('endDate', None),
         'requestTypes': args.get('requestTypes', []),
-        'ncList': args.get('ncList', [])
-    }
+        'ncList': args.get('ncList', [])}
 
     data = await map_svc.heatmap(filters)
     return json(data)
@@ -62,20 +63,22 @@ async def heatmap(request):
 
 async def visualizations(request):
     args = request.json
-    start = args.get('startDate', None)
-    end = args.get('endDate', None)
-    ncs = args.get('ncList', [])
-    requests = args.get('requestTypes', [])
 
-    data = await vis_svc.visualizations(startDate=start,
-                                        endDate=end,
-                                        requestTypes=requests,
-                                        ncList=ncs)
+    startDate = args.get('startDate', None)
+    endDate = args.get('endDate', None)
+    ncList = args.get('ncList', [])
+    requestTypes = args.get('requestTypes', [])
+
+    data = await vis_svc.visualizations(startDate=startDate,
+                                        endDate=endDate,
+                                        requestTypes=requestTypes,
+                                        ncList=ncList)
     return json(data)
 
 
 async def comparison(request, type):
     args = request.json
+
     startDate = args.get('startDate', None)
     endDate = args.get('endDate', None)
     requestTypes = args.get('requestTypes', [])
@@ -93,6 +96,7 @@ async def comparison(request, type):
 
 async def feedback(request):
     args = request.json
+    
     title = args.get('title', None)
     body = args.get('body', None)
 
