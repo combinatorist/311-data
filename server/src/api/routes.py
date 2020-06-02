@@ -6,6 +6,7 @@ from .services import (
     github as github_svc,
     map as map_svc,
     status as status_svc)
+from .errors import to
 
 
 async def index(request):
@@ -69,17 +70,13 @@ async def heatmap(request):
 
 
 async def visualizations(request):
-    args = request.json
+    data = await vis_svc.visualizations(**to.unpack(request.json, {
+        'startDate': to.req.DATE,
+        'endDate': to.req.DATE,
+        'requestTypes': to.opt.LIST_OF_STR,
+        'ncList': to.opt.LIST_OF_INT
+    }))
 
-    startDate = args.get('startDate', None)
-    endDate = args.get('endDate', None)
-    requestTypes = args.get('requestTypes', [])
-    ncList = args.get('ncList', [])
-
-    data = await vis_svc.visualizations(startDate=startDate,
-                                        endDate=endDate,
-                                        requestTypes=requestTypes,
-                                        ncList=ncList)
     return json(data)
 
 
