@@ -17,3 +17,5 @@ if __name__ == '__main__':
     if pb.enabled:
         log_heading('populating picklebase')
         pb.populate()
+    else:
+        pb.clear_data()

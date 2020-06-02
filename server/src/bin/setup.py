@@ -24,7 +24,7 @@ def check_env():
 
 def check_db():
     '''
-    Check whether the DB is in the latest format. If not, update it.
+    Check whether the DB is in the right format.
     '''
     import sys
     import db

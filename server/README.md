@@ -6,14 +6,13 @@
 
 2. clone this repo and `cd` into the `server` directory
 
-3. create .env file and add socrata token
+3. copy .env file: `cp .env.example .env`
 
-from this directory run `cp .env.example .env`
-then get a socrata token from someone on the team and add it to the .env file
+4. add socrata token to .env file
 
-3. build your containers: `docker-compose build`
+5. build your containers: `docker-compose build`
 
-4. Seed your local DB: `docker-compose run server python bin/ingest.py`
+6. Seed your local DB: `docker-compose run server python bin/ingest.py`
 
 
 ## Development
