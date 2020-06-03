@@ -22,24 +22,33 @@ def check_env():
 
 
 def check_db():
-    '''
-    Check whether the DB is in the right format.
-    '''
-    import sys
     import db
+    from settings import Database
     from utils.log import log, log_colors
 
-    try:
-        db.exec_sql('SELECT * FROM requests LIMIT 1')
-        log('DB looks good')
-    except Exception:
-        log('''
-            Your database is out of date. To fix, set
-            INGEST_YEARS in your .env file to whatever years
-            you want to ingest, and then run:
+    setup_message = '''
+        Your database is not set up. Please run:
 
-            docker-compose run server python bin/ingest.py
-        ''', color=log_colors.FAIL, dedent=True)
+        docker-compose run server python bin/db_setup.py
+    '''
+
+    migrate_message = '''
+        Your database is out of date. Please run:
+
+        docker-compose run server python bin/db_migrate.py
+    '''
+
+    try:
+        query = 'SELECT * FROM metadata LIMIT 1'
+        version = db.exec_sql(query).first().version
+    except Exception:
+        log(setup_message, color=log_colors.FAIL, dedent=True)
+        sys.exit(1)
+
+    if version == Database.VERSION:
+        log('DB looks good')
+    else:
+        log(migrate_message, color=log_colors.FAIL, dedent=True)
         sys.exit(1)
 
 
