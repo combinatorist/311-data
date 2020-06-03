@@ -3,6 +3,7 @@ from . import info
 from . import requests
 from .conn import engine, Session, exec_sql
 from .version import version
+from . import migrate
 
 
 __all__ = [
@@ -12,5 +13,6 @@ __all__ = [
     'engine',
     'Session',
     'exec_sql',
-    'version'
+    'version',
+    'migrate'
 ]
