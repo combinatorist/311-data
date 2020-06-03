@@ -13,12 +13,12 @@ services:
     volumes:
       - backend_data:/var/lib/postgresql/data
 
-  redis:
-    container_name: 311-redis
-    build:
-      context: ../redis
-    expose:
-      - 6379
+  # redis:
+  #   container_name: 311-redis
+  #   build:
+  #     context: ../redis
+  #   expose:
+  #     - 6379
 
   server:
     container_name: 311-server
@@ -30,7 +30,8 @@ services:
       - ./:/app
     depends_on:
       - db
-    command: bash -c "python bin/setup.py && python app.py"
+    # command: bash -c "python bin/setup.py && python app.py"
+    command: python bin/setup.py
 
   ################ OPTIONAL SERVICES (uncomment to use) ###################
 

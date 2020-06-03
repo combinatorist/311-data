@@ -38,18 +38,18 @@ def check_db():
         docker-compose run server python bin/db_migrate.py
     '''
 
-    try:
-        query = 'SELECT * FROM metadata LIMIT 1'
-        version = db.exec_sql(query).first().version
-    except Exception:
+    version = db.version()
+    
+    if version == -1:
         log(setup_message, color=log_colors.FAIL, dedent=True)
         sys.exit(1)
 
-    if version == Database.VERSION:
-        log('DB looks good')
-    else:
+    elif version < Database.VERSION:
         log(migrate_message, color=log_colors.FAIL, dedent=True)
         sys.exit(1)
+
+    else:
+        log('DB looks good')
 
 
 if __name__ == '__main__':
