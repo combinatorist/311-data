@@ -4,22 +4,21 @@ sys.path.append(join(dirname(__file__), '..'))
 
 
 def check_env():
-    '''
-    Check whether .env exists. If not, copy it from .env.example
-    '''
     from os.path import isfile
-    import shutil
-    from utils.log import log
+    from utils.log import log, log_colors
 
     env_dir = join(dirname(__file__), '../..')
     env_file = join(env_dir, '.env')
-    example_file = join(env_dir, '.env.example')
 
-    if not isfile(env_file):
-        log('.env missing, copying .env.example')
-        shutil.copyfile(example_file, env_file)
-    else:
+    if isfile(env_file):
         log('.env file found')
+    else:
+        log('''\
+            Your .env file is missing. Please run:
+
+            cp .env.example .env
+        ''', color=log_colors.FAIL, dedent=True)
+        sys.exit(1)
 
 
 def check_db():
@@ -34,13 +33,13 @@ def check_db():
         db.exec_sql('SELECT * FROM requests LIMIT 1')
         log('DB looks good')
     except Exception:
-        message = '''
-Your local database is out of date. To fix, set INGEST_YEARS in your
-`.env` file to whatever years you want to ingest, and then run:
+        log('''
+            Your database is out of date. To fix, set
+            INGEST_YEARS in your .env file to whatever years
+            you want to ingest, and then run:
 
-docker-compose run server python bin/ingest.py
-'''
-        log(message, color=log_colors.FAIL)
+            docker-compose run server python bin/ingest.py
+        ''', color=log_colors.FAIL, dedent=True)
         sys.exit(1)
 
 

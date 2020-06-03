@@ -1,3 +1,5 @@
+from textwrap import dedent as dedenter
+
 
 class log_colors:
     HEADER = '\033[95m'
@@ -10,15 +12,15 @@ class log_colors:
     UNDERLINE = '\033[4m'
 
 
-def log(*args, color=None):
-    if color is None:
-        print(*args, flush=True)
-    else:
-        message = color
-        for arg in args:
-            message += str(arg)
-        message += log_colors.ENDC
-        print(message, flush=True)
+def log(message='', color=None, dedent=False):
+    if dedent:
+        message = dedenter(message)
+
+    lines = message.split('\n')
+    for line in lines:
+        if color is not None:
+            line = color + line + log_colors.ENDC
+        print(line, flush=True)
 
 
 def bar(chars, width):
