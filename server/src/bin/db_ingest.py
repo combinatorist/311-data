@@ -7,5 +7,4 @@ if __name__ == '__main__':
     import db
     from settings import Ingest
 
-    db.reset()
     db.requests.add_years(Ingest.YEARS)

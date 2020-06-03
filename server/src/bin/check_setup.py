@@ -29,7 +29,7 @@ def check_db():
     setup_message = '''
         Your database is not set up. Please run:
 
-        docker-compose run server python bin/db_setup.py
+        docker-compose run server python bin/db_create.py
     '''
 
     migrate_message = '''
@@ -39,7 +39,7 @@ def check_db():
     '''
 
     version = db.version()
-    
+
     if version == -1:
         log(setup_message, color=log_colors.FAIL, dedent=True)
         sys.exit(1)
