@@ -1,19 +1,45 @@
-from sqlalchemy import create_engine
+import sys
+from sqlalchemy import create_engine, event, exc
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
-from sqlalchemy import event
 from settings import Database
+from utils.log import log, log_colors
 
 
-engine = None if Database.URL is None else create_engine(Database.URL)
+def get_engine(url):
+    def fail(message):
+        log(message, color=log_colors.FAIL)
+        sys.exit(1)
+
+    if url is None:
+        fail('No database url. Check your environment.')
+
+    try:
+        engine = create_engine(url)
+    except Exception:
+        fail('Invalid database url. Check your environment.')
+    else:
+        try:
+            with engine.connect():
+                pass
+        except Exception:
+            fail('Cannot connect to database.')
+        else:
+            return engine
+
+
+engine = get_engine(Database.URL)
 
 
 Session = sessionmaker(bind=engine)
 
 
 def exec_sql(sql):
-    with engine.connect() as conn:
-        return conn.execute(text(sql))
+    try:
+        with engine.connect() as conn:
+            return conn.execute(text(sql))
+    except exc.OperationalError as e:
+        log(e, color=log_colors.FAIL)
 
 
 if Database.LOG_QUERIES:
