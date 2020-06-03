@@ -1,4 +1,10 @@
 
+### Quick start
+
+1. Install docker and docker-compose
+
+2. run `chmod +x install.sh && ./install.sh`
+
 
 ### Getting started
 
