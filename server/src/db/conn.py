@@ -1,4 +1,5 @@
 import sys
+import time
 from sqlalchemy import create_engine, event, exc
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import text
@@ -7,6 +8,9 @@ from utils.log import log, log_colors
 
 
 def get_engine(url):
+    ATTEMPTS = 5
+    DELAY = 3
+
     def fail(message):
         log(message, color=log_colors.FAIL)
         sys.exit(1)
@@ -19,13 +23,21 @@ def get_engine(url):
     except Exception:
         fail('Invalid database url. Check your environment.')
     else:
-        try:
-            with engine.connect():
-                pass
-        except Exception:
-            fail('Cannot connect to database.')
-        else:
-            return engine
+        attempt = 0
+        while True:
+            try:
+                with engine.connect():
+                    pass
+            except Exception:
+                if attempt < ATTEMPTS:
+                    print(f'Could not connect to DB, retrying in {DELAY}')
+                    time.sleep(DELAY)
+                    attempt += 1
+                    continue
+
+                fail('Cannot connect to database.')
+            else:
+                return engine
 
 
 engine = get_engine(Database.URL)
