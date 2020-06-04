@@ -1,11 +1,9 @@
 ## Getting Started
 
 ### Step 1 of 3: install docker and docker-compose
-Docker/docker-compose are the only dependencies for running the server.
-- Mac has an installer
-- Linux has many installers
-- Windows...well, there's probably something.
-You can check that everything is installed and running like this:
+Docker/Docker-Compose are the only required dependencies for running the server. They are available on all platforms. You can find installation instructions [here](https://docs.docker.com/compose/install/) for Docker and [here](https://docs.docker.com/compose/install/) for Docker-Compose. (The two come bundled together for Mac and Windows, which makes things pretty easy.)
+
+Once you're done, you can check that everything is working by running these commands:
 ```
 docker --version           // confirms docker is installed
 docker-compose --version   // confirms docker-compose is installed
@@ -17,18 +15,20 @@ With docker running on your machine, `cd` into this directory and run:
 ```
 chmod +x install.sh && ./install.sh
 ```
-This will download a bunch of docker images, set up your database, and then fire everything up. If all goes well, at the end you should have running api server backed by Postgres and Redis. You can then visit these URLs to make sure everything is working.
+This will download a bunch of docker images, set up your database, and then fire everything up. If all goes well, at the end you should have running api server backed by Postgres and Redis.
+
+If you'd like to take a tour of the services and make sure everything works, you can then visit these URLs:
 - http://localhost:5000 -- the api -- should say that the api is running
 - http://localhost:8080 -- postgres GUI -- should show you the database. Login with the following:
-  - System: PostgreSQL
-  - Server: db
-  - Username: 311_user
-  - Password: 311_pass
-  - Database: 311_db
+  - System: **PostgreSQL**
+  - Server: **db**
+  - Username: **311_user**
+  - Password: **311_pass**
+  - Database: **311_db**
 - http://localhost:5001 -- redis GUI -- lets you inspect the contents of Redis.
-  - In the Host box, change "localhost" to "redis" and then hit Connect to log in.
+  - In the Host box, change 'localhost' to 'redis' and then hit Connect to log in.
 
-`Ctrl-c` will shut everything down. And `docker-compose up` will bring it all back again.
+`Ctrl-C` will shut down all of these services. And `docker-compose up` will bring them all back up again.
 
 ### Step 3 of 3: seed your database
 Right now the server is functional and all endpoints should be working. But for most purposes you'll need some data in your database. The data comes from [Socrata](https://dev.socrata.com/), a public api that hosts many datasets for LA and other cities. To add data, you'll need to get a Socrata token and run one more command.
