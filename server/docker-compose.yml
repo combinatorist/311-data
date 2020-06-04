@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.8'
 
 services:
   db:
@@ -17,15 +17,14 @@ services:
 
   redis:
     container_name: 311-redis
-    build:
-      context: ../redis
+    restart: always
+    build: ./redis
     expose:
       - 6379
 
   server:
     container_name: 311-server
-    build:
-      context: .
+    build: .
     ports:
       - target: 5000
         published: ${SERVER_HOST_PORT}
@@ -34,8 +33,6 @@ services:
     depends_on:
       - db
     command: bash -c "python bin/check_setup.py && python app.py"
-
-  ################ OPTIONAL SERVICES (uncomment to use) ###################
 
   adminer:
     container_name: postgres-dashboard
@@ -51,28 +48,26 @@ services:
       - redis:redis
     ports:
       - 5001:5001
-  #
+
   # jupyter:
   #   container_name: 311-notebook
   #   image: jupyter/scipy-notebook
   #   environment:
-  #     DATABASE_URL: postgresql://REDACTED:REDACTED@db:5432/postgres
+  #     DATABASE_URL: postgresql://${DB_USER}:${DB_PASS}@db:5432/${DB_NAME}
   #   ports:
   #     - 8888:8888
   #   volumes:
   #     - ../:/home/jovyan/work
 
-  ########################## NOT WORKING YET ##############################
-
-  # frontend:
-  #  build:
-  #    context: ..
-  #  network_mode: host
-  #  image: docker.pkg.github.com/hackforla/311-data/frontend:latest
-  #  restart: always
-  #  container_name: 311-frontend
-  #  ports:
-  #    - 3000:3000
+    # frontend:
+    #  build:
+    #    context: ..
+    #  network_mode: host
+    #  image: docker.pkg.github.com/hackforla/311-data/frontend:latest
+    #  restart: always
+    #  container_name: 311-frontend
+    #  ports:
+    #    - 3000:3000
 
 volumes:
   database:

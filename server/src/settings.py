@@ -26,15 +26,15 @@ class Database:
     LOG_CONNECTIONS = False
 
 
-class Picklebase:
-    ENABLED = env('PICKLEBASE_ENABLED', to.BOOL)
-    BATCH_SIZE = env('PICKLEBASE_BATCH_SIZE', to.INT)
-
-
 class Redis:
     ENABLED = env('REDIS_ENABLED', to.BOOL)
     URL = env('REDIS_URL')
     TTL_SECONDS = env('REDIS_TTL_SECONDS', to.INT)
+
+
+class Picklebase:
+    ENABLED = env('PICKLEBASE_ENABLED', to.BOOL)
+    BATCH_SIZE = env('PICKLEBASE_BATCH_SIZE', to.INT)
 
 
 class Picklecache:
