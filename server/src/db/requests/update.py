@@ -1,5 +1,5 @@
+from settings import Socrata
 from datetime import timedelta
-from settings import Ingest
 from utils.log import log
 from .. import info
 from ..conn import exec_sql
@@ -44,7 +44,7 @@ def update():
         stage.fetch_year(
             year=year,
             num_rows=-1,
-            batch_size=Ingest.BATCH_SIZE,
+            batch_size=Socrata.BATCH_SIZE,
             since=last_updated)
     stage.clean_table()
     __update_requests_table()

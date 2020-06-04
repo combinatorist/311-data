@@ -1,4 +1,4 @@
-from settings import Ingest
+from settings import Socrata
 from utils.log import log
 from . import stage
 from . import views
@@ -24,8 +24,8 @@ def __update_requests_table(year):
 
 
 def add_years(years,
-              rows_per_year=Ingest.ROWS_PER_YEAR,
-              batch_size=Ingest.BATCH_SIZE):
+              rows_per_year=-1,
+              batch_size=Socrata.BATCH_SIZE):
 
     # exclude years that are already in the db
     has_years = info.years()

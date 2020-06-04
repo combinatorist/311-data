@@ -5,6 +5,7 @@ sys.path.append(join(dirname(__file__), '..'))
 
 def get_cli_args():
     from argparse import ArgumentParser
+    from settings import Socrata
 
     parser = ArgumentParser(description='''
         Seed the database with data from the Socrata api.
@@ -21,7 +22,8 @@ def get_cli_args():
 
     parser.add_argument('--batch',
         type=int,
-        help='number of rows per call to Socrata api (defaults to 50000)')
+        help='number of rows per call to Socrata api' +
+             f'(defaults to {Socrata.BATCH_SIZE})')
 
     return parser.parse_args()
 
@@ -46,11 +48,12 @@ def parse_years(years):
 
 if __name__ == '__main__':
     import db
+    from settings import Socrata
 
     args = get_cli_args()
 
     years = parse_years(args.years)
     rows = -1 if args.rows is None else args.rows
-    batch = 50000 if args.batch is None else args.batch
+    batch = Socrata.BATCH_SIZE if args.batch is None else args.batch
 
     db.requests.add_years(years, rows_per_year=rows, batch_size=batch)

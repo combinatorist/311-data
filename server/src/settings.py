@@ -50,6 +50,7 @@ class Github:
 
 class Socrata:
     TOKEN = env('SOCRATA_TOKEN')
+    BATCH_SIZE = env('SOCRATA_BATCH_SIZE', to.INT)
     TIMEOUT = 90
     ATTEMPTS = 5
     DOMAIN = 'data.lacity.org'
@@ -60,12 +61,6 @@ class Socrata:
         2017: 'd4vt-q4t5',
         2016: 'ndkd-k878',
         2015: 'ms7h-a45h'}
-
-
-class Ingest:
-    YEARS = env('INGEST_YEARS', to.LIST_OF_INTS)
-    BATCH_SIZE = env('INGEST_BATCH_SIZE', to.INT)
-    ROWS_PER_YEAR = env('INGEST_ROWS_PER_YEAR', to.INT)
 
 
 class Slack:
