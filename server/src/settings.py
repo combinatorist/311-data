@@ -20,7 +20,6 @@ class Server:
 
 
 class Database:
-    VERSION = 0
     URL = env('DATABASE_URL')
     LOG_QUERIES = env('DATABASE_LOG_QUERIES', to.BOOL)
     LOG_CONNECTIONS = False

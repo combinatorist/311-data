@@ -39,12 +39,13 @@ def check_db():
     '''
 
     version = db.version()
+    latest_version = 0  # will come from the migrate module
 
     if version == -1:
         log(setup_message, color=log_colors.FAIL, dedent=True)
         sys.exit(1)
 
-    elif version < Database.VERSION:
+    elif version < latest_version:
         log(migrate_message, color=log_colors.FAIL, dedent=True)
         sys.exit(1)
 
