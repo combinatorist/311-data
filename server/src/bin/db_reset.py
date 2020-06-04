@@ -4,4 +4,5 @@ sys.path.append(join(dirname(__file__), '..'))
 
 
 if __name__ == '__main__':
-    print('running migration')
+    import db
+    db.reset()

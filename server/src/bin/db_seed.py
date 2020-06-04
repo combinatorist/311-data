@@ -53,5 +53,4 @@ if __name__ == '__main__':
     rows = -1 if args.rows is None else args.rows
     batch = 50000 if args.batch is None else args.batch
 
-    db.reset()
     db.requests.add_years(years, rows_per_year=rows, batch_size=batch)
