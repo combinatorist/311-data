@@ -42,7 +42,7 @@ class Picklecache:
 
 class Github:
     TOKEN = env('GITHUB_TOKEN')
-    ISSUES_URL = 'https://api.github.com/repos/hackforla/311-data/issues'
+    ISSUES_URL = 'https://api.github.com/repos/hackforla/311-data-support/issues'
     PROJECT_URL = env('GITHUB_PROJECT_URL')
     SHA = env('GITHUB_SHA')
 

@@ -61,6 +61,7 @@ def show_db_contents():
     years = sorted(Socrata.DATASET_IDS.keys())
     info_rows = db.info.rows()['byYear']
     rows = [info_rows.get(year, 0) for year in years]
+
     print(tabulate({
         'year': years,
         'requests': rows,
