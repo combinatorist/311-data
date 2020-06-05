@@ -80,3 +80,10 @@ docker-compose run server pytest ..
 ```
 docker-compose run server python bin/db_update.py
 ```
+
+
+## Uninstall
+The following command will remove all docker containers, images, volumes, and networks that are specific to this project.
+```
+docker-compose down --rmi local --volumes
+```
