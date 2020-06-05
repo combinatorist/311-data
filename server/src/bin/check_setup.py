@@ -78,8 +78,8 @@ if __name__ == '__main__':
     check_env()
     check_db()
 
-    log_heading('database contents')
-    show_db_contents()
+    # log_heading('database contents')
+    # show_db_contents()
 
     import pb
     if not pb.enabled:
