@@ -15,14 +15,6 @@ handler = logging.FileHandler('./static/profiler.log', 'w')
 logger.addHandler(handler)
 
 
-# log sql queries
-event.listen(
-    Engine,
-    'before_cursor_execute',
-    lambda conn, cursor, statement, parameters, context, executemany:
-        logger.info(statement))
-
-
 @contextmanager
 def profiled():
     """
