@@ -53,6 +53,20 @@ def check_db():
         log('DB looks good')
 
 
+def show_db_contents():
+    import db
+    from tabulate import tabulate
+    from settings import Socrata
+
+    years = sorted(Socrata.DATASET_IDS.keys())
+    info_rows = db.info.rows()['byYear']
+    rows = [info_rows.get(year, 0) for year in years]
+    print(tabulate({
+        'year': years,
+        'requests': rows,
+    }, tablefmt='psql', headers='keys'))
+
+
 if __name__ == '__main__':
     from utils.log import log_heading
     import time
@@ -62,6 +76,9 @@ if __name__ == '__main__':
     log_heading('checks')
     check_env()
     check_db()
+
+    log_heading('database contents')
+    show_db_contents()
 
     import pb
     if not pb.enabled:
