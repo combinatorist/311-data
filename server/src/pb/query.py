@@ -17,8 +17,8 @@ def query(table, fields, filters):
     startDate = pd.to_datetime(filters['startDate'])
     endDate = pd.to_datetime(filters['endDate'])
     requestTypes = filters['requestTypes']
-    ncList = filters.get('ncList')
-    cdList = filters.get('cdList')
+    ncList = filters.get('ncList', [])
+    cdList = filters.get('cdList', [])
 
     batches = []
     for batch_num in get_batch_nums(table, startDate, endDate):
