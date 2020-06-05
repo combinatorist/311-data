@@ -14,16 +14,16 @@ def get_cli_args():
 
     parser.add_argument('--years',
         type=str,
-        help='comma-separated years to download (defaults to all years)')
+        help='comma-separated years to add to the DB (default: all years)')
 
     parser.add_argument('--rows',
         type=int,
-        help='number of rows to downlad per year (defaults to all rows)')
+        help='number of rows to downlad per year (default: all rows)')
 
     parser.add_argument('--batch',
         type=int,
-        help='number of rows per call to Socrata api' +
-             f'(defaults to {Socrata.BATCH_SIZE})')
+        help='number of rows per call to Socrata api ' +
+             f'(default: {Socrata.BATCH_SIZE})')
 
     return parser.parse_args()
 
