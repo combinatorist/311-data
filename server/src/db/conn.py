@@ -30,7 +30,7 @@ def get_engine(url):
                     pass
             except Exception:
                 if attempt < ATTEMPTS:
-                    print(f'Could not connect to DB, retrying in {DELAY}')
+                    log(f'Could not connect to DB, retrying in {DELAY}')
                     time.sleep(DELAY)
                     attempt += 1
                     continue
